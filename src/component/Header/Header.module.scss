@@ -3,8 +3,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: var(--white); 
     padding: 2rem 3rem;
+    z-index: 10;
   }
   
   .header img {
@@ -18,14 +18,17 @@
    gap: 0.5rem;
 
    a{
+    cursor: pointer;
     padding: 0.5rem 2rem;
     border-radius: 500px;
     text-decoration: none;
-    color: var(--black);
+    color: var(--white);
     transition: background-color 0.15s ease-in-out;
+    border-radius: 100px;
 
-    &:hover{
-      background-color: var(--green);
+    &:hover {
+      background-color: var(--blue);
+      color: var(--white);
     }
    }
 
@@ -34,7 +37,7 @@
    }
    .signup{
     font-weight: 500;
-    border: 3px solid var(--green);
+    border: 3px solid var(--blue);
    }
   }
   
