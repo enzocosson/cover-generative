@@ -1,0 +1,40 @@
+.header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--white); 
+    padding: 2rem 3rem;
+  }
+  
+  .header img {
+    height: 40px; 
+  }
+  
+  .connexion {
+    display: flex;
+   justify-content: center;
+   align-items: center;
+   gap: 0.5rem;
+
+   a{
+    padding: 0.5rem 2rem;
+    border-radius: 500px;
+    text-decoration: none;
+    color: var(--black);
+    transition: background-color 0.15s ease-in-out;
+
+    &:hover{
+      background-color: var(--green);
+    }
+   }
+
+   .login{
+    background-color: transparent;
+   }
+   .signup{
+    font-weight: 500;
+    border: 3px solid var(--green);
+   }
+  }
+  
