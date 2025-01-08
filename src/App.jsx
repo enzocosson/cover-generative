@@ -21,6 +21,11 @@ const App = () => {
 
   return (
     <div className={styles.app}>
+      <div className={styles.loader}>
+        <img className={styles.hand} src="/images/lhand.png" alt="" />
+        <img className={styles.hand} src="/images/rhand.png" alt="" />
+
+      </div>
       {/* <CanvasP5 /> */}
       <div className={styles.couverture}>
         <div className={styles.gradient}></div>
