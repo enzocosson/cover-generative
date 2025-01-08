@@ -1,183 +1,204 @@
-import React, { useRef, useState, useEffect } from "react";
 import p5 from "p5";
-import styles from './Canvas.module.scss';
 
-const CanvasP5 = () => {
-  const canvasRef = useRef(null); // Référence au canvas
-  const [seed, setSeed] = useState(42); // Graine initiale
-  const imageRef = useRef(null); // Utiliser une référence pour l'image
+export const initializeCanvasP5 = (onTextureReady) => {
+  let image; // Variable pour stocker l'image
+  let isImageLoaded = false; // Indicateur de chargement de l'image
+  let isCanvasReady = false; // Indicateur que le canvas est prêt
+  
+  
+  const sketch = (p) => {
+    let particlesA = [];
+    let particlesB = [];
+    let particlesC = [];
+    const numParticles = 1500;
+    const noiseScale = 500;
+    let frameCount = 0;
 
-  useEffect(() => {
-    const sketch = (p) => {
-      let particles_a = [];
-      let particles_b = [];
-      let particles_c = [];
-      const nums = 1500;
-      const noiseScale = 500;
-      let frameCount = 0;
+    let containerWidth = 500; // Largeur par défaut
+    let containerHeight = 500; // Hauteur par défaut
 
-      // Taille de la première planète et position aléatoire
-      const planetRadius = 150; 
-      const planetPos = p.createVector(
-        p.random(0, 250), 
-        p.random(0, 250)
-      );
+    const planetA = {
+      radius: 150,
+      position: p.createVector(p.random(0, 250), p.random(0, 250)),
+      gradient: ["#7209B7", "#4CC9F0"],
+    };
 
-      // Taille de la deuxième planète et position aléatoire
-      const planetRadiusB = 60; // Planète plus petite
-      const planetPosB = p.createVector(
-        p.random(250, 500), 
-        p.random(250, 500)
-      );
+    const planetB = {
+      radius: 60,
+      position: p.createVector(p.random(250, 500), p.random(250, 500)),
+      gradient: ["#3A0CA3", "#F72585"],
+    };
 
-      const initializeParticles = () => {
-        particles_a = [];
-        particles_b = [];
-        particles_c = [];
-        for (let i = 0; i < nums; i++) {
-          particles_a[i] = new Particle(p, p.random(0, p.width), p.random(0, p.height));
-          particles_b[i] = new Particle(p, p.random(0, p.width), p.random(0, p.height));
-          particles_c[i] = new Particle(p, p.random(0, p.width), p.random(0, p.height));
-        }
-      };
-
-      p.setup = () => {
-        p.randomSeed(seed); 
-        p.noiseSeed(seed); 
-        p.createCanvas(500, 500).parent(canvasRef.current);
-        p.background(21, 8, 50);
-        initializeParticles();
-
-        // Charger l'image une seule fois et la stocker dans la référence
-        imageRef.current = p.loadImage('/jul.png');
-      };
-
-      p.draw = () => {
-        p.noStroke();
-        p.smooth();
-        frameCount++;
-
-        // Dessiner la première planète avec un gradient linéaire
-        const grad = p.drawingContext.createLinearGradient(
-          planetPos.x - planetRadius, 
-          planetPos.y - planetRadius, 
-          planetPos.x + planetRadius, 
-          planetPos.y + planetRadius
-        );
-        grad.addColorStop(0, "#7209B7"); 
-        grad.addColorStop(1, "#4CC9F0"); 
-        p.drawingContext.fillStyle = grad;
-        p.beginShape();
-        p.ellipse(planetPos.x, planetPos.y, planetRadius * 2, planetRadius * 2);
-        p.endShape(p.CLOSE);
-
-        // Dessiner la deuxième planète avec un gradient linéaire
-        const gradB = p.drawingContext.createLinearGradient(
-          planetPosB.x - planetRadiusB, 
-          planetPosB.y - planetRadiusB, 
-          planetPosB.x + planetRadiusB, 
-          planetPosB.y + planetRadiusB
-        );
-        gradB.addColorStop(0, "#3A0CA3"); // Couleur de début du dégradé
-        gradB.addColorStop(1, "#F72585"); // Couleur de fin du dégradé
-        p.drawingContext.fillStyle = gradB;
-        p.beginShape();
-        p.ellipse(planetPosB.x, planetPosB.y, planetRadiusB * 2, planetRadiusB * 2);
-        p.endShape(p.CLOSE);
-
-        // Après 500 frames, les particules sont figées
-        if (frameCount > 500) {
-          for (let i = 0; i < nums; i++) {
-            const radius = p.map(i, 0, nums, 1, 2);
-            const alpha = p.map(i, 0, nums, 0, 250);
-
-            p.fill(69, 33, 124, alpha);
-            particles_a[i].display(radius);
-
-            p.fill(7, 153, 242, alpha);
-            particles_b[i].display(radius);
-
-            p.fill(255, 255, 255, alpha);
-            particles_c[i].display(radius);
-          }
-        } else {
-          for (let i = 0; i < nums; i++) {
-            const radius = p.map(i, 0, nums, 1, 2);
-            const alpha = p.map(i, 0, nums, 0, 250);
-
-            p.fill(69, 33, 124, alpha);
-            particles_a[i].move();
-            particles_a[i].display(radius);
-            particles_a[i].checkEdge();
-
-            p.fill(7, 153, 242, alpha);
-            particles_b[i].move();
-            particles_b[i].display(radius);
-            particles_b[i].checkEdge();
-
-            p.fill(255, 255, 255, alpha);
-            particles_c[i].move();
-            particles_c[i].display(radius);
-            particles_c[i].checkEdge();
-          }
-        }
-
-        if (imageRef.current) {
-          const imageX = (p.width - imageRef.current.width / 2) - 70; 
-          const imageY = (p.height - imageRef.current.height / 2) - 60; 
-        
-          const newWidth = 500;
-          const newHeight = (imageRef.current.height / imageRef.current.width) * newWidth;
-        
-          p.image(imageRef.current, imageX, imageY, newWidth, newHeight);
-        }
-      };
-
-      function Particle(p, x, y) {
-        this.dir = p.createVector(0, 0);
-        this.vel = p.createVector(0, 0);
-        this.pos = p.createVector(x, y);
-        this.speed = 0.4;
-
-        this.move = function () {
-          const angle = p.noise(this.pos.x / noiseScale, this.pos.y / noiseScale) * p.TWO_PI * noiseScale;
-          this.dir.x = p.cos(angle);
-          this.dir.y = p.sin(angle);
-          this.vel = this.dir.copy();
-          this.vel.mult(this.speed);
-          this.pos.add(this.vel);
-        };
-
-        this.checkEdge = function () {
-          if (this.pos.x > p.width || this.pos.x < 0 || this.pos.y > p.height || this.pos.y < 0) {
-            this.pos.x = p.random(50, p.width);
-            this.pos.y = p.random(50, p.height);
-          }
-        };
-
-        this.display = function (r) {
-          p.ellipse(this.pos.x, this.pos.y, r, r);
-        };
+    // Initialisation des particules
+    const initializeParticles = () => {
+      particlesA = [];
+      particlesB = [];
+      particlesC = [];
+      for (let i = 0; i < numParticles; i++) {
+        particlesA.push(new Particle(p, p.random(0, containerWidth), p.random(0, containerHeight)));
+        particlesB.push(new Particle(p, p.random(0, containerWidth), p.random(0, containerHeight)));
+        particlesC.push(new Particle(p, p.random(0, containerWidth), p.random(0, containerHeight)));
       }
     };
 
-    const p5Instance = new p5(sketch);
-
-    return () => {
-      p5Instance.remove();
+    // Préchargement des ressources
+    p.preload = () => {
+      console.log("Préchargement de l'image commencé...");
+      console.log("onTextureReady reçu :", onTextureReady);
+    
+      image = p.loadImage(
+        "/jul.png",
+        () => {
+          isImageLoaded = true;
+          console.log("Image chargée avec succès !", isCanvasReady, "test", onTextureReady);
+          
+          if (isCanvasReady && onTextureReady) {
+            console.log("Canvas prêt et image chargée. Envoi du canvas...");
+            onTextureReady(p.canvas.elt);
+          }
+        },
+        () => {
+          console.error("Erreur lors du chargement de l'image !");
+        }
+      );
     };
-  }, [seed]); 
+    
+    
 
-  const handleReset = () => {
-    setSeed(Math.floor(Math.random() * 100000)); 
+    // Configuration initiale du sketch
+    p.setup = () => {
+      const container = document.querySelector(".couverture");
+      if (container) {
+        containerWidth = container.offsetWidth;
+        containerHeight = container.offsetHeight;
+      }
+
+      const canvas = p.createCanvas(containerWidth, containerHeight);
+      p.background(21, 8, 50);
+      initializeParticles();
+
+      isCanvasReady = true;
+
+      // Si l'image est déjà chargée, transmettre le canvas
+      if (isImageLoaded && onTextureReady) {
+        console.log(canvas.elt);
+        
+        onTextureReady(canvas.elt);
+      }
+    };
+
+    // Dessin principal
+    p.draw = () => {
+      frameCount++;
+      p.noStroke();
+      p.smooth();
+
+      // Afficher l'image si elle est chargée
+      if (isImageLoaded) {
+        const imgWidth = containerWidth * 0.4;
+        const imgHeight = containerHeight * 0.4;
+        const imgX = (containerWidth - imgWidth) / 2;
+        const imgY = (containerHeight - imgHeight) / 2;
+
+        p.image(image, imgX, imgY, imgWidth, imgHeight);
+      }
+
+      // Dessiner les planètes
+      drawPlanet(p, planetA);
+      drawPlanet(p, planetB);
+
+      // Dessiner ou animer les particules
+      if (frameCount > 500) {
+        drawParticles(p, particlesA, [69, 33, 124]);
+        drawParticles(p, particlesB, [7, 153, 242]);
+        drawParticles(p, particlesC, [255, 255, 255]);
+      } else {
+        moveAndDrawParticles(p, particlesA, [69, 33, 124]);
+        moveAndDrawParticles(p, particlesB, [7, 153, 242]);
+        moveAndDrawParticles(p, particlesC, [255, 255, 255]);
+      }
+    };
+
+    // Ajuster la taille du canvas lors du redimensionnement de la fenêtre
+    p.windowResized = () => {
+      const container = document.querySelector(".couverture");
+      if (container) {
+        containerWidth = container.offsetWidth;
+        containerHeight = container.offsetHeight;
+        p.resizeCanvas(containerWidth, containerHeight);
+      }
+    };
+
+    // Classe pour les particules
+    function Particle(p, x, y) {
+      this.pos = p.createVector(x, y);
+      this.vel = p.createVector(0, 0);
+      this.dir = p.createVector(0, 0);
+      this.speed = 0.4;
+
+      this.move = function () {
+        const angle =
+          p.noise(this.pos.x / noiseScale, this.pos.y / noiseScale) * p.TWO_PI * noiseScale;
+        this.dir.set(p.cos(angle), p.sin(angle));
+        this.vel = this.dir.copy().mult(this.speed);
+        this.pos.add(this.vel);
+      };
+
+      this.checkEdge = function () {
+        if (
+          this.pos.x > containerWidth ||
+          this.pos.x < 0 ||
+          this.pos.y > containerHeight ||
+          this.pos.y < 0
+        ) {
+          this.pos.set(p.random(50, containerWidth), p.random(50, containerHeight));
+        }
+      };
+
+      this.display = function (radius) {
+        p.ellipse(this.pos.x, this.pos.y, radius, radius);
+      };
+    }
+
+    // Dessiner une planète avec un dégradé
+    function drawPlanet(p, planet) {
+      const grad = p.drawingContext.createLinearGradient(
+        planet.position.x - planet.radius,
+        planet.position.y - planet.radius,
+        planet.position.x + planet.radius,
+        planet.position.y + planet.radius
+      );
+      grad.addColorStop(0, planet.gradient[0]);
+      grad.addColorStop(1, planet.gradient[1]);
+      p.drawingContext.fillStyle = grad;
+
+      p.ellipse(planet.position.x, planet.position.y, planet.radius * 2);
+    }
+
+    // Déplacer et dessiner les particules
+    function moveAndDrawParticles(p, particles, color) {
+      for (const particle of particles) {
+        p.fill(...color, 150);
+        particle.move();
+        particle.display(2);
+        particle.checkEdge();
+      }
+    }
+
+    // Dessiner uniquement les particules
+    function drawParticles(p, particles, color) {
+      for (const particle of particles) {
+        p.fill(...color, 150);
+        particle.display(2);
+      }
+    }
   };
 
-  return (
-    <div>
-      <div ref={canvasRef} className={styles.canvas}></div>
-      <button onClick={handleReset} className={styles.regenerateButton}>Régénérer</button>
-    </div>
-  );
-};
+  // Créer une instance P5
+  const p5Instance = new p5(sketch);
 
-export default CanvasP5;
+  // Fonction de nettoyage
+  return () => {
+    p5Instance.remove();
+  };
+};
