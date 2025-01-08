@@ -4,6 +4,16 @@ import { initializeCanvasP5 } from "./CanvasP5";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import Pochette from "./Pochette";
+import Header from "./component/Header/Header";
+import {
+  EffectComposer,
+  Vignette,
+  Bloom,
+  HueSaturation,
+  SMAA,
+  BrightnessContrast,
+} from "@react-three/postprocessing";
+import Disque from "./Disque";
 
 const App = () => {
   const [textureUrl, setTextureUrl] = useState(null);
@@ -11,18 +21,17 @@ const App = () => {
   const [resetKey, setResetKey] = useState(0); // Clé pour réinitialiser le sketch
 
   useEffect(() => {
-    // Initialisation de P5
     setIsLoading(true); // Démarrage du chargement
     const cleanup = initializeCanvasP5((canvas) => {
       if (canvas) {
         console.log(canvas);
-        setTextureUrl(canvas); // Mettre à jour la texture
-        setIsLoading(false); // Terminer le chargement
+        setTextureUrl(canvas);
+        setIsLoading(false);
       }
     });
 
-    return cleanup; // Nettoyage lors de la réinitialisation ou du démontage
-  }, [resetKey]); // Réinitialise lorsque la clé change
+    return cleanup;
+  }, [resetKey]);
 
   const handleReset = () => {
     setTextureUrl(null); // Réinitialiser la texture
@@ -31,41 +40,21 @@ const App = () => {
 
   return (
     <div className={styles.app}>
+      <Header />
       <div className={styles.loader}>
         <img className={styles.hand} src="/images/lhand.png" alt="" />
         <img className={styles.hand} src="/images/rhand.png" alt="" />
+      </div>
 
-      </div>
-      <div className={styles.controls}>
-        <button onClick={handleReset} className={styles.resetButton}>
-          Réinitialiser le Sketch
-        </button>
-      </div>
       <div className={styles.couverture}>
         <div className={styles.gradient}></div>
         <img className={styles.bg} src="/images/bg.png" alt="" />
-        <Canvas>
-          <directionalLight position={[5, 5, 5]} intensity={1.5} color="white" />
-          <ambientLight intensity={3.0} color="white" />
-          <pointLight position={[0, 5, 0]} intensity={2.0} color="white" />
 
-          <OrbitControls
-            enablePan={false}
-            enableZoom={true}
-            enableRotate={true}
-            target={[0, 1, -2]}
-          />
-
-          {/* Rendre la pochette ou un indicateur de chargement */}
-          {isLoading ? (
-            <mesh>
-              <sphereGeometry args={[1, 32, 32]} />
-              <meshStandardMaterial color="gray" />
-            </mesh>
-          ) : (
-            textureUrl && <Pochette textureURL={textureUrl} position={[0, 1, -2]} />
-          )}
-        </Canvas>
+        {/* <div className={styles.controls}>
+        <button onClick={handleReset} className={styles.resetButton}>
+          Réinitialiser le Sketch
+        </button>
+      </div>*/}
 
         <div className={styles.title}>
           <h1>JUL</h1>
@@ -105,7 +94,11 @@ const App = () => {
       </div>
 
       <div className={styles.track__list}>
-        <img className={styles.purple_art} src="/images/purple_art.png" alt="" />
+        <img
+          className={styles.purple_art}
+          src="/images/purple_art.png"
+          alt=""
+        />
         <h2>Une tracklist qui résonne comme une galerie d’art</h2>
         <p>#1 Nuit étoilée sur Marseille</p>
         <p>#2 Flow et pinceaux</p>
@@ -121,9 +114,61 @@ const App = () => {
 
       <div className={styles.cover}>
         <h2>Personnalise ta propre cover lors de la précommande !</h2>
-        <a href="#" className={styles.button}>
-            Créer sa cover
-          </a>
+
+        <Canvas className={styles.canvas__pochette}>
+          <directionalLight
+            position={[5, 5, 5]}
+            intensity={1.5}
+            color="white"
+          />
+          <ambientLight intensity={3.0} color="white" />
+          <pointLight position={[0, 5, 0]} intensity={4} color="white" />
+
+          <EffectComposer disableNormalPass multisampling={false}>
+            <Bloom
+              luminanceThreshold={0.1}
+              radius={0.9}
+              levels={3}
+              intensity={1}
+              mipmapBlur
+            />
+            <Vignette offset={0.3} darkness={0.7} eskil={false} />
+            <HueSaturation hue={0} saturation={0.2} />
+            <SMAA />
+          </EffectComposer>
+
+          <OrbitControls
+            enablePan={false}
+            enableZoom={false}
+            enableRotate={true}
+            target={[0, 0, 0]}
+          />
+
+          {isLoading ? (
+            <mesh>
+              <sphereGeometry args={[1, 32, 32]} />
+              <meshStandardMaterial color="gray" />
+            </mesh>
+          ) : (
+            textureUrl && (
+              <>
+                <Pochette
+                  textureURL={textureUrl}
+                  rotation={[0.2, -2.1, -0.1]}
+                  position={[0, -2, 0]}
+                  scale={1.5}
+                />
+                <Disque
+                  rotation={[0, -1.8, -0.3]}
+                  position={[1.3, -0.6, 0.6]}
+                  scale={1.5}/>
+              </>
+            )
+          )}
+        </Canvas>
+        <button onClick={handleReset} className={styles.button}>
+          Générer sa cover
+        </button>
       </div>
     </div>
   );
