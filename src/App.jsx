@@ -281,7 +281,7 @@ const App = () => {
             rencontre la magie des étoiles de Van Gogh. Une expérience musicale
             et artistique inédite.
           </p>
-          <a ref={titre_button} href="#" className="title__button">
+          <a ref={titre_button} href="#cover" className="title__button">
             Créer sa cover
           </a>
         </div>
@@ -349,7 +349,7 @@ const App = () => {
         />
       </div>
 
-      <div className={styles.cover}>
+      <div id="cover" className={styles.cover}>
         <h2>Personnalise ta propre cover lors de la précommande !</h2>
 
         <div
