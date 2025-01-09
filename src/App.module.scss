@@ -4,6 +4,7 @@
   box-sizing: border-box;
   font-family: var(--font2);
   scroll-behavior: smooth;
+
 }
 
 .app {
@@ -328,5 +329,205 @@
         color: var(--white);
       }
     }
+  }
+}
+
+@media(max-width: 1700px){
+  .planet__off,
+  .planet__on, .accroche{
+    width: 70%!important;
+    bottom: -80%!important;
+  }
+  .accroche{
+    bottom : -25%!important;
+    font-size: 5.5rem!important;
+  }
+  .accroche span {
+    font-size: 6rem!important;
+  }
+  .apropos{
+    p{
+      width: 90%!important;
+    }
+  }
+  .title {
+    width: 70%!important;
+  }
+  .couverture{
+    height: 100vh!important;
+  }
+  .apropos{
+    height: 85vh!important;
+  }
+}
+@media(max-width: 1393px){
+  .planet__off,
+  .planet__on, .accroche{
+    bottom: -65%!important;
+  }
+  .accroche{
+    bottom : -35%!important;
+    font-size: 5.5rem!important;
+  }
+  .accroche span {
+    font-size: 6rem!important;
+  }
+  .title {
+    width: 70%!important;
+  }
+  .couverture{
+    height: 95vh!important;
+  }
+  .apropos{
+    height: 85vh!important;
+  }
+}
+@media(max-width: 1178px){
+  .planet__off,
+  .planet__on, .accroche{
+    bottom: -50%!important;
+  }
+  .accroche{
+    bottom : -25%!important;
+  }
+  .apropos{
+    height: 65vh!important;
+  }
+}
+@media(max-width: 1027px){
+  .planet__off,
+  .planet__on, .accroche{
+   bottom: -25%!important;
+  }
+  .accroche{
+    font-size: 4.5rem!important;
+    bottom: -5%!important;
+  }
+  .accroche span {
+    font-size: 5.5rem!important;
+  }
+  .apropos{
+    height: 45vh!important;
+  }
+}
+
+@media(max-width: 840px){
+  .planet__off,
+  .planet__on, .accroche{
+   bottom: -10%!important;
+  }
+  .accroche{
+    font-size: 3.5rem!important;
+    bottom: 10%!important;
+  }
+  .accroche span {
+    font-size: 4.5rem!important;
+  }
+  .apropos{
+    height: 25vh!important;
+    padding: 1rem!important;
+  }
+}
+
+@media(max-width: 702px){
+  .track__list{
+    display: flex!important;
+    justify-content: center!important;
+    flex-direction: column!important;
+    width: 100%!important;
+  }
+}
+@media(max-width: 666px){
+  .planet__off,
+  .planet__on, .accroche{
+   bottom: 5%!important;
+  }
+  .accroche{
+    font-size: 3rem!important;
+    bottom: 15%!important;
+  }
+  .accroche span {
+    font-size: 4rem!important;
+  }
+  .apropos{
+    height: 15vh!important;
+  }
+}
+@media(max-width: 626px){
+  .cover{
+    padding: 0rem!important;
+    h2{
+      padding: 4rem 4rem 0 4rem;
+    }
+    button{
+      margin-bottom: 2rem!important;
+    }
+  }
+}
+@media(max-width: 590px){
+  .planet__off,
+  .planet__on, .accroche{
+    bottom: 0%!important;
+  }
+  .accroche{
+    font-size: 2.5rem!important;
+    bottom: 10%!important;
+  }
+  .accroche span {
+    font-size: 3.5rem!important;
+  }
+  .apropos{
+    height: 30vh!important;
+  }
+  .apropos h2 {
+    text-align: center!important;
+  }
+}
+
+@media(max-width: 515px){
+  .planet__off,
+  .planet__on, .accroche{
+   bottom: 10%!important;
+  }
+  .accroche{
+    font-size: 2rem!important;
+    bottom: 20%!important;
+  }
+  .accroche span {
+    font-size: 3rem!important;
+  }
+  .apropos{
+    height: 20vh!important;
+  }
+}
+@media(max-width: 440px){
+  .planet__off,
+  .planet__on, .accroche{
+   bottom: 10%!important;
+  }
+  .accroche{
+    font-size: 1.5rem!important;
+  }
+  .accroche span {
+    font-size: 2.5rem!important;
+  }
+  .apropos{
+    height:35vh!important;
+  }
+}
+@media(max-width: 364px){
+  .planet__off,
+  .planet__on, .accroche{
+   bottom: 20%!important;
+  }
+  .accroche{
+    font-size: 1rem!important;
+    bottom: 25%!important;
+  }
+  .accroche span {
+    font-size: 2rem!important;
+  }
+  .apropos{
+    height:25vh!important;
   }
 }

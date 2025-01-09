@@ -31,6 +31,10 @@ const App = () => {
     vient: new Audio(vient),
   };
 
+  Object.values(sounds).forEach((sound) => {
+    sound.volume = 0.75;
+  });
+
   const playRandomSound = () => {
     const soundKeys = Object.keys(sounds);
     let newSoundKey;
