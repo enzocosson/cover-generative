@@ -10,12 +10,15 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@react-spring/three": "^9.7.5",
+    "@react-spring/web": "^9.7.5",
     "@react-three/drei": "^9.120.5",
     "@react-three/fiber": "^8.17.10",
     "@react-three/postprocessing": "^2.16.6",
     "babel-plugin-glsl": "^1.0.0",
     "glsl-noise": "^0.0.0",
     "glslify": "^7.1.1",
+    "gsap": "^3.12.5",
     "lenis": "^1.1.18",
     "p5": "^1.11.2",
     "p5.brush": "^1.1.4",

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styles from "./App.module.scss";
 import { initializeCanvasP5 } from "./CanvasP5";
+
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import Pochette from "./Pochette";
@@ -17,16 +18,13 @@ import Disque from "./Disque";
 
 const App = () => {
   const [textureUrl, setTextureUrl] = useState(null);
-  const [isLoading, setIsLoading] = useState(true); // État de chargement
-  const [resetKey, setResetKey] = useState(0); // Clé pour réinitialiser le sketch
+  const [resetKey, setResetKey] = useState(0);
 
   useEffect(() => {
-    setIsLoading(true); // Démarrage du chargement
     const cleanup = initializeCanvasP5((canvas) => {
       if (canvas) {
         console.log(canvas);
         setTextureUrl(canvas);
-        setIsLoading(false);
       }
     });
 
@@ -34,8 +32,8 @@ const App = () => {
   }, [resetKey]);
 
   const handleReset = () => {
-    setTextureUrl(null); // Réinitialiser la texture
-    setResetKey((prevKey) => prevKey + 1); // Changer la clé pour redémarrer le sketch
+    setTextureUrl(null); 
+    setResetKey((prevKey) => prevKey + 1); 
   };
 
   return (
@@ -49,12 +47,6 @@ const App = () => {
       <div className={styles.couverture}>
         <div className={styles.gradient}></div>
         <img className={styles.bg} src="/images/bg.png" alt="" />
-
-        {/* <div className={styles.controls}>
-        <button onClick={handleReset} className={styles.resetButton}>
-          Réinitialiser le Sketch
-        </button>
-      </div>*/}
 
         <div className={styles.title}>
           <h1>JUL</h1>
@@ -144,28 +136,24 @@ const App = () => {
             target={[0, 0, 0]}
           />
 
-          {isLoading ? (
-            <mesh>
-              <sphereGeometry args={[1, 32, 32]} />
-              <meshStandardMaterial color="gray" />
-            </mesh>
-          ) : (
-            textureUrl && (
-              <>
-                <Pochette
-                  textureURL={textureUrl}
-                  rotation={[0.2, -2.1, -0.1]}
-                  position={[0, -2, 0]}
-                  scale={1.5}
-                />
-                <Disque
-                  rotation={[0, -1.8, -0.3]}
-                  position={[1.3, -0.6, 0.6]}
-                  scale={1.5}/>
-              </>
-            )
+          {textureUrl && (
+            <>
+              <Pochette
+                textureURL={textureUrl}
+                rotation={[0.2, -2.1, -0.1]}
+                position={[0, -2, 0]}
+                scale={1.5}
+              />
+              <Disque
+                rotation={[0, -1.8, -0.3]}
+                position={[1.3, -0.6, 0.6]}
+                scale={1.5}
+              />
+            </>
           )}
+
         </Canvas>
+
         <button onClick={handleReset} className={styles.button}>
           Générer sa cover
         </button>

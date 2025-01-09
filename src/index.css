@@ -28,3 +28,9 @@
     --font2: "SugiestRegular";
     --font3: 'Poppins', sans-serif;
 }
+
+.p5Canvas{
+    display: none;
+    position: absolute !important;
+
+}
