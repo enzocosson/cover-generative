@@ -152,7 +152,6 @@
       left: 50%;
       transform: translate(-50%, 0%);
       width: 1100px;
-      animation: levitate 5s ease-in-out infinite;
     }
 
     @keyframes levitate {
@@ -166,7 +165,7 @@
     }
 
     .planet__on {
-      animation: levitate 5s ease-in-out infinite, pulse 5s ease-in-out infinite;
+      animation: pulse 5s ease-in-out infinite;
     }
 
     @keyframes pulse {
@@ -179,8 +178,8 @@
       100% {
         opacity: 1;
       }
-    }
-
+    }  
+   
     .accroche {
       font-size: 8rem;
       pointer-events: none;
@@ -193,7 +192,7 @@
       color: var(--white);
       text-shadow: 1px 2px 4px rgb(12 12 12 / 59%);
 
-      span{
+      span.gras{
         font-family: var(--font1);
         font-size: 6rem;
       }
@@ -282,6 +281,27 @@
     justify-content:center;
     align-items: center;
     z-index: 9;
+
+    .rectangle{
+      position: absolute;
+      top: 0%;
+      left: 0%;
+      width: 100%;
+      height: 100%;
+      z-index: 10;
+      background-color: var(--purple);
+    }
+
+    .video{
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 9;
+    }
   }
 
   .cover{
@@ -298,6 +318,13 @@
 
     .canvas__pochette{
       cursor: grab;
+      position: absolute !important;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 100%;
+      height: 100%;
+      z-index: 0;
     }
 
 
@@ -306,6 +333,8 @@
       font-family: var(--font1);
       color: var(--white);
       margin-bottom: 2rem;
+      z-index: 2;
+      
       
     }
 
@@ -322,6 +351,7 @@
       font-weight: 500;
       border: 3px solid var(--pink);
       background-color: var(--pink);
+      z-index: 2;
 
 
       &:hover {
