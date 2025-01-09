@@ -37,7 +37,7 @@ const signup = useRef(null)
           y: 0,
           opacity: 1,
           duration: 1,
-          delay: 1.2,
+          delay: 1.1,
           ease: "power2.inOut",
         }
       );
@@ -50,7 +50,7 @@ const signup = useRef(null)
           y: 0,
           opacity: 1,
           duration: 1,
-          delay: 1.4,
+          delay: 1.2,
           ease: "power2.inOut",
         }
       );
