@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styles from "./App.module.scss";
 import { initializeCanvasP5 } from "./CanvasP5";
-
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import Pochette from "./Pochette";
@@ -12,13 +11,44 @@ import {
   Bloom,
   HueSaturation,
   SMAA,
-  BrightnessContrast,
 } from "@react-three/postprocessing";
 import Disque from "./Disque";
+import { AiOutlineSound } from "react-icons/ai";
+import { GiSoundOff } from "react-icons/gi";
+import tchikita from "./assets/JUL_tchikita.mp3";
+import ovni from "./assets/ovni.mp3";
+import moto from './assets/moto.mp3'
+import vient from './assets/vientdela.mp3'
 
 const App = () => {
   const [textureUrl, setTextureUrl] = useState(null);
   const [resetKey, setResetKey] = useState(0);
+  const [isSoundOn, setIsSoundOn] = useState(false);
+  const [lastPlayed, setLastPlayed] = useState(null); // Dernier son joué
+
+  // Instances des sons
+  const sounds = {
+    tchikita: new Audio(tchikita),
+    ovni: new Audio(ovni),
+    moto: new Audio(moto),
+    vient: new Audio(vient),
+  };
+
+  // Fonction pour jouer un son aléatoire différent du dernier
+  const playRandomSound = () => {
+    const soundKeys = Object.keys(sounds);
+    let newSoundKey;
+
+    // Assurez-vous que le nouveau son est différent du dernier
+    do {
+      newSoundKey = soundKeys[Math.floor(Math.random() * soundKeys.length)];
+    } while (newSoundKey === lastPlayed);
+
+    // Mettez à jour le dernier son joué et jouez le son
+    setLastPlayed(newSoundKey);
+    sounds[newSoundKey].currentTime = 0; // Repart de zéro
+    sounds[newSoundKey].play();
+  };
 
   useEffect(() => {
     const cleanup = initializeCanvasP5((canvas) => {
@@ -32,8 +62,10 @@ const App = () => {
   }, [resetKey]);
 
   const handleReset = () => {
-    setTextureUrl(null); 
-    setResetKey((prevKey) => prevKey + 1); 
+    setIsSoundOn(!isSoundOn)
+    playRandomSound();
+    setTextureUrl(null);
+    setResetKey((prevKey) => prevKey + 1);
   };
 
   return (
@@ -56,7 +88,7 @@ const App = () => {
             rencontre la magie des étoiles de Van Gogh. Une expérience musicale
             et artistique inédite.
           </p>
-          <a href="#" className={styles.button}>
+          <a href="#cover" className={styles.button}>
             Créer sa cover
           </a>
         </div>
@@ -96,7 +128,6 @@ const App = () => {
         <p>#2 Flow et pinceaux</p>
         <p>#3 Coups de pinceau, coups de cœur</p>
         <p>#4 Purple Dream</p>
-        <p>#4 Purple Dream</p>
         <p>#5 Le ciel te regarde</p>
       </div>
 
@@ -104,7 +135,7 @@ const App = () => {
         <img src="/images/play.svg" alt="" />
       </div>
 
-      <div className={styles.cover}>
+      <div className={styles.cover} id="cover">
         <h2>Personnalise ta propre cover lors de la précommande !</h2>
 
         <Canvas className={styles.canvas__pochette}>
@@ -151,7 +182,6 @@ const App = () => {
               />
             </>
           )}
-
         </Canvas>
 
         <button onClick={handleReset} className={styles.button}>
