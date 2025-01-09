@@ -16,12 +16,42 @@ import {
   SMAA,
 } from "@react-three/postprocessing";
 import Disque from "./Disque";
+import tchikita from "./assets/JUL_tchikita.mp3";
+import ovni from "./assets/ovni.mp3";
+import moto from './assets/moto.mp3'
+import vient from './assets/vientdela.mp3'
 
 const App = () => {
   const [textureUrl, setTextureUrl] = useState(null);
   const [resetKey, setResetKey] = useState(0);
+  const [isSoundOn, setIsSoundOn] = useState(false);
+  const [lastPlayed, setLastPlayed] = useState(null);
 
   gsap.registerPlugin(ScrollTrigger);
+
+  const sounds = {
+    tchikita: new Audio(tchikita),
+    ovni: new Audio(ovni),
+    moto: new Audio(moto),
+    vient: new Audio(vient),
+  };
+
+  Object.values(sounds).forEach((sound) => {
+    sound.volume = 0.75;
+  });
+
+  const playRandomSound = () => {
+    const soundKeys = Object.keys(sounds);
+    let newSoundKey;
+
+    do {
+      newSoundKey = soundKeys[Math.floor(Math.random() * soundKeys.length)];
+    } while (newSoundKey === lastPlayed);
+
+    setLastPlayed(newSoundKey);
+    sounds[newSoundKey].currentTime = 0;
+    sounds[newSoundKey].play();
+  };
 
   useEffect(() => {
     const cleanup = initializeCanvasP5((canvas) => {
@@ -35,9 +65,12 @@ const App = () => {
   }, [resetKey]);
 
   const handleReset = () => {
+    setIsSoundOn(!isSoundOn)
+    playRandomSound();
     setTextureUrl(null);
     setResetKey((prevKey) => prevKey + 1);
   };
+
   const titre_jul = useRef(null)
   const titre_cover = useRef(null)
   const titre_txt = useRef(null)
