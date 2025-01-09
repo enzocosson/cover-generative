@@ -44,3 +44,24 @@
    }
   }
   
+  @media(max-width: 497px){
+    .header{
+      padding: 1.5rem 0.5rem!important;
+    }
+    .connexion a {
+      padding: 0.5rem 0.5rem!important;
+      font-size: 0.9rem!important;
+    }
+  }
+  @media(max-width: 365px){
+    .header{
+      padding: 2rem 0.5rem!important;
+    }
+    .connexion a {
+      padding: 0.25rem 0.25rem!important;
+      font-size: 0.8rem!important;
+    }
+    .header img {
+      height: 12px;
+    }
+  }
