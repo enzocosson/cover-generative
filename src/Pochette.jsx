@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useGLTF } from '@react-three/drei';
 import * as THREE from 'three';
 
-function Pochette({ textureURL, textureBack, ...props }) {
+function Pochette({ textureURL, ...props }) {
   const { nodes, materials } = useGLTF('/models/pochette.glb');
   
   const [texture, setTexture] = useState(null);
@@ -24,18 +24,6 @@ function Pochette({ textureURL, textureBack, ...props }) {
     }
   }, [textureURL]);
 
-
-  useEffect(() => {
-    if (textureBack) {
-      const backTexture = new THREE.TextureLoader().load(textureBack);
-      backTexture.wrapS = backTexture.wrapT = THREE.ClampToEdgeWrapping;
-      backTexture.flipY = false;
-      backTexture.minFilter = THREE.LinearFilter;
-      backTexture.magFilter = THREE.LinearFilter;
-      backTexture.needsUpdate = true;
-      setBackTexture(backTexture);
-    }
-  }, [textureBack]);
 
   return (
 

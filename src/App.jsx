@@ -17,7 +17,6 @@ import tchikita from "./assets/JUL_tchikita.mp3";
 import ovni from "./assets/ovni.mp3";
 import moto from './assets/moto.mp3'
 import vient from './assets/vientdela.mp3'
-import textureBack from './assets/foret.jpg'
 
 const App = () => {
   const [textureUrl, setTextureUrl] = useState(null);
@@ -166,7 +165,6 @@ const App = () => {
             <>
               <Pochette
                 textureURL={textureUrl}
-                textureBack= {textureBack}
                 rotation={[0.2, -2.1, -0.1]}
                 position={[0, -2, 0]}
                 scale={1.5}
