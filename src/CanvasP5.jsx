@@ -1,183 +1,224 @@
-import React, { useRef, useState, useEffect } from "react";
 import p5 from "p5";
-import styles from './Canvas.module.scss';
 
-const CanvasP5 = () => {
-  const canvasRef = useRef(null); // Référence au canvas
-  const [seed, setSeed] = useState(42); // Graine initiale
-  const imageRef = useRef(null); // Utiliser une référence pour l'image
+export const initializeCanvasP5 = (onTextureReady) => {
+  let image;
+  let isImageLoaded = false;
+  let isCanvasReady = false;
+  
+  const sketch = (p) => {
+    let particlesA = [];
+    let particlesB = [];
+    let particlesC = [];
+    const numParticles = 1500;
+    const noiseScale = 500;
+    let frameCount = 0;
 
-  useEffect(() => {
-    const sketch = (p) => {
-      let particles_a = [];
-      let particles_b = [];
-      let particles_c = [];
-      const nums = 1500;
-      const noiseScale = 500;
-      let frameCount = 0;
+    let containerWidth = 500;
+    let containerHeight = 500;
 
-      // Taille de la première planète et position aléatoire
-      const planetRadius = 150; 
-      const planetPos = p.createVector(
-        p.random(0, 250), 
-        p.random(0, 250)
-      );
+    let planetA;
+    let planetB;
 
-      // Taille de la deuxième planète et position aléatoire
-      const planetRadiusB = 60; // Planète plus petite
-      const planetPosB = p.createVector(
-        p.random(250, 500), 
-        p.random(250, 500)
-      );
-
-      const initializeParticles = () => {
-        particles_a = [];
-        particles_b = [];
-        particles_c = [];
-        for (let i = 0; i < nums; i++) {
-          particles_a[i] = new Particle(p, p.random(0, p.width), p.random(0, p.height));
-          particles_b[i] = new Particle(p, p.random(0, p.width), p.random(0, p.height));
-          particles_c[i] = new Particle(p, p.random(0, p.width), p.random(0, p.height));
-        }
+    const initializePlanets = () => {
+      const palette = [
+        "#4CC9F0", // Bleu clair
+        "#4361EE", // Bleu
+        "#3A0CA3", // Violet foncé
+        "#7209B7", // Violet
+        "#F72585", // Rose
+      ];
+    
+      // Fonction pour obtenir deux couleurs aléatoires de la palette
+      const getRandomGradient = () => {
+        const color1 = palette[Math.floor(p.random(palette.length))];
+        let color2;
+        do {
+          color2 = palette[Math.floor(p.random(palette.length))];
+        } while (color1 === color2); // Assure que la deuxième couleur est différente de la première
+        return [color1, color2];
       };
-
-      p.setup = () => {
-        p.randomSeed(seed); 
-        p.noiseSeed(seed); 
-        p.createCanvas(500, 500).parent(canvasRef.current);
-        p.background(21, 8, 50);
-        initializeParticles();
-
-        // Charger l'image une seule fois et la stocker dans la référence
-        imageRef.current = p.loadImage('/jul.png');
+    
+      planetA = {
+        radius: p.random(100, 200), // Taille aléatoire
+        position: p.createVector(p.random(0, containerWidth / 2), p.random(0, containerHeight / 2)),
+        gradient: getRandomGradient(),
       };
-
-      p.draw = () => {
-        p.noStroke();
-        p.smooth();
-        frameCount++;
-
-        // Dessiner la première planète avec un gradient linéaire
-        const grad = p.drawingContext.createLinearGradient(
-          planetPos.x - planetRadius, 
-          planetPos.y - planetRadius, 
-          planetPos.x + planetRadius, 
-          planetPos.y + planetRadius
-        );
-        grad.addColorStop(0, "#7209B7"); 
-        grad.addColorStop(1, "#4CC9F0"); 
-        p.drawingContext.fillStyle = grad;
-        p.beginShape();
-        p.ellipse(planetPos.x, planetPos.y, planetRadius * 2, planetRadius * 2);
-        p.endShape(p.CLOSE);
-
-        // Dessiner la deuxième planète avec un gradient linéaire
-        const gradB = p.drawingContext.createLinearGradient(
-          planetPosB.x - planetRadiusB, 
-          planetPosB.y - planetRadiusB, 
-          planetPosB.x + planetRadiusB, 
-          planetPosB.y + planetRadiusB
-        );
-        gradB.addColorStop(0, "#3A0CA3"); // Couleur de début du dégradé
-        gradB.addColorStop(1, "#F72585"); // Couleur de fin du dégradé
-        p.drawingContext.fillStyle = gradB;
-        p.beginShape();
-        p.ellipse(planetPosB.x, planetPosB.y, planetRadiusB * 2, planetRadiusB * 2);
-        p.endShape(p.CLOSE);
-
-        // Après 500 frames, les particules sont figées
-        if (frameCount > 500) {
-          for (let i = 0; i < nums; i++) {
-            const radius = p.map(i, 0, nums, 1, 2);
-            const alpha = p.map(i, 0, nums, 0, 250);
-
-            p.fill(69, 33, 124, alpha);
-            particles_a[i].display(radius);
-
-            p.fill(7, 153, 242, alpha);
-            particles_b[i].display(radius);
-
-            p.fill(255, 255, 255, alpha);
-            particles_c[i].display(radius);
-          }
-        } else {
-          for (let i = 0; i < nums; i++) {
-            const radius = p.map(i, 0, nums, 1, 2);
-            const alpha = p.map(i, 0, nums, 0, 250);
-
-            p.fill(69, 33, 124, alpha);
-            particles_a[i].move();
-            particles_a[i].display(radius);
-            particles_a[i].checkEdge();
-
-            p.fill(7, 153, 242, alpha);
-            particles_b[i].move();
-            particles_b[i].display(radius);
-            particles_b[i].checkEdge();
-
-            p.fill(255, 255, 255, alpha);
-            particles_c[i].move();
-            particles_c[i].display(radius);
-            particles_c[i].checkEdge();
-          }
-        }
-
-        if (imageRef.current) {
-          const imageX = (p.width - imageRef.current.width / 2) - 70; 
-          const imageY = (p.height - imageRef.current.height / 2) - 60; 
-        
-          const newWidth = 500;
-          const newHeight = (imageRef.current.height / imageRef.current.width) * newWidth;
-        
-          p.image(imageRef.current, imageX, imageY, newWidth, newHeight);
-        }
+    
+      planetB = {
+        radius: p.random(50, 100), // Taille aléatoire
+        position: p.createVector(p.random(containerWidth / 2, containerWidth), p.random(containerHeight / 2, containerHeight)),
+        gradient: getRandomGradient(),
       };
+    };
+    
 
-      function Particle(p, x, y) {
-        this.dir = p.createVector(0, 0);
-        this.vel = p.createVector(0, 0);
-        this.pos = p.createVector(x, y);
-        this.speed = 0.4;
-
-        this.move = function () {
-          const angle = p.noise(this.pos.x / noiseScale, this.pos.y / noiseScale) * p.TWO_PI * noiseScale;
-          this.dir.x = p.cos(angle);
-          this.dir.y = p.sin(angle);
-          this.vel = this.dir.copy();
-          this.vel.mult(this.speed);
-          this.pos.add(this.vel);
-        };
-
-        this.checkEdge = function () {
-          if (this.pos.x > p.width || this.pos.x < 0 || this.pos.y > p.height || this.pos.y < 0) {
-            this.pos.x = p.random(50, p.width);
-            this.pos.y = p.random(50, p.height);
-          }
-        };
-
-        this.display = function (r) {
-          p.ellipse(this.pos.x, this.pos.y, r, r);
-        };
+    const initializeParticles = () => {
+      particlesA = [];
+      particlesB = [];
+      particlesC = [];
+      for (let i = 0; i < numParticles; i++) {
+        particlesA.push(new Particle(p, p.random(0, containerWidth), p.random(0, containerHeight)));
+        particlesB.push(new Particle(p, p.random(0, containerWidth), p.random(0, containerHeight)));
+        particlesC.push(new Particle(p, p.random(0, containerWidth), p.random(0, containerHeight)));
       }
     };
 
-    const p5Instance = new p5(sketch);
-
-    return () => {
-      p5Instance.remove();
+    p.preload = () => {
+      console.log("Préchargement de l'image commencé...");
+      console.log("onTextureReady reçu :", onTextureReady);
+    
+      image = p.loadImage(
+        "/jul.png",
+        () => {
+          isImageLoaded = true;
+          console.log("Image chargée avec succès !", isCanvasReady, "test", onTextureReady);
+          
+          if (isCanvasReady && onTextureReady) {
+            console.log("Canvas prêt et image chargée. Envoi du canvas...");
+            onTextureReady(p.canvas.elt);
+          }
+        },
+        () => {
+          console.error("Erreur lors du chargement de l'image !");
+        }
+      );
     };
-  }, [seed]); 
 
-  const handleReset = () => {
-    setSeed(Math.floor(Math.random() * 100000)); 
+    p.setup = () => {
+      const container = document.querySelector(".couverture");
+      if (container) {
+        containerWidth = container.offsetWidth;
+        containerHeight = container.offsetHeight;
+      }
+
+      const canvas = p.createCanvas(containerWidth, containerHeight);
+      p.background(21, 8, 50);
+      initializePlanets(); // Initialisation des planètes avec des propriétés aléatoires
+      initializeParticles();
+
+      isCanvasReady = true;
+
+      if (isImageLoaded && onTextureReady) {
+        console.log(canvas.elt);
+        onTextureReady(canvas.elt);
+      }
+    };
+
+    p.draw = () => {
+      frameCount++;
+      p.noStroke();
+      p.smooth();
+
+      drawPlanet(p, planetA);
+      drawPlanet(p, planetB);
+
+      if (frameCount > 500) {
+        drawParticles(p, particlesA);
+        drawParticles(p, particlesB);
+        drawParticles(p, particlesC);
+      } else {
+        moveAndDrawParticles(p, particlesA);
+        moveAndDrawParticles(p, particlesB);
+        moveAndDrawParticles(p, particlesC);
+      }
+
+      if (isImageLoaded) {
+        const imgWidth = containerWidth * 1;
+        const imgHeight = containerHeight * 1;
+        const imgX = (containerWidth - imgWidth) / 2;
+        const imgY = containerHeight - imgHeight;
+
+        p.image(image, imgX, imgY, imgWidth, imgHeight);
+      }
+    };
+
+    p.windowResized = () => {
+      const container = document.querySelector(".couverture");
+      if (container) {
+        containerWidth = container.offsetWidth;
+        containerHeight = container.offsetHeight;
+        p.resizeCanvas(containerWidth, containerHeight);
+      }
+    };
+
+    function Particle(p, x, y) {
+      this.pos = p.createVector(x, y);
+      this.vel = p.createVector(0, 0);
+      this.dir = p.createVector(0, 0);
+      this.speed = 0.4;
+      this.color = randomColor(); // Couleur par défaut
+
+      this.move = function () {
+        const angle = p.noise(this.pos.x / noiseScale, this.pos.y / noiseScale) * p.TWO_PI * noiseScale;
+        this.dir.set(p.cos(angle), p.sin(angle));
+        this.vel = this.dir.copy().mult(this.speed);
+        this.pos.add(this.vel);
+      };
+
+      this.checkEdge = function () {
+        if (
+          this.pos.x > containerWidth ||
+          this.pos.x < 0 ||
+          this.pos.y > containerHeight ||
+          this.pos.y < 0
+        ) {
+          this.pos.set(p.random(50, containerWidth), p.random(50, containerHeight));
+        }
+      };
+
+      this.display = function (radius) {
+        p.fill(this.color); // Couleur de la particule
+        p.ellipse(this.pos.x, this.pos.y, radius, radius);
+      };
+    }
+
+    function randomColor() {
+      // Sélection d'une couleur de base parmi une palette
+      const baseColors = [
+        "#4CC9F0", // Bleu clair
+        "#4361EE", // Bleu
+        "#3A0CA3", // Violet foncé
+        "#7209B7", // Violet
+        "#F72585", // Rose
+      ];
+
+      const baseColor = baseColors[Math.floor(p.random(baseColors.length))];
+      const colorVariation = p.random(0.5, 1.5); // Variation d'intensité
+      return p.color(p.red(baseColor) * colorVariation, p.green(baseColor) * colorVariation, p.blue(baseColor) * colorVariation);
+    }
+
+    function drawPlanet(p, planet) {
+      const grad = p.drawingContext.createLinearGradient(
+        planet.position.x - planet.radius,
+        planet.position.y - planet.radius,
+        planet.position.x + planet.radius,
+        planet.position.y + planet.radius
+      );
+      grad.addColorStop(0, planet.gradient[0]);
+      grad.addColorStop(1, planet.gradient[1]);
+      p.drawingContext.fillStyle = grad;
+
+      p.ellipse(planet.position.x, planet.position.y, planet.radius * 2);
+    }
+
+    function moveAndDrawParticles(p, particles) {
+      for (const particle of particles) {
+        particle.move();
+        particle.display(3);
+        particle.checkEdge();
+      }
+    }
+
+    function drawParticles(p, particles) {
+      for (const particle of particles) {
+        particle.display(3);
+      }
+    }
   };
 
-  return (
-    <div>
-      <div ref={canvasRef} className={styles.canvas}></div>
-      <button onClick={handleReset} className={styles.regenerateButton}>Régénérer</button>
-    </div>
-  );
-};
+  const p5Instance = new p5(sketch);
 
-export default CanvasP5;
+  return () => {
+    p5Instance.remove();
+  };
+};

@@ -1,19 +1,420 @@
-*{
+* {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
+  font-family: var(--font2);
 }
 
-
-.app{
+.app {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-  background-color: rgb(34, 34, 34);
+  background-color: var(--purple);
   display: flex;
-  justify-content: center;
-  align-items: flex-start;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
   width: 100%;
   min-height: 100vh;
 
+  .loader {
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100vh;
+    background-color: #0a011f;
+    z-index: 1000;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    /* Animation combinée */
+    animation: hand 0.5s ease-in-out,
+      slideOut 0.5s cubic-bezier(0.8, 0, 0.43, 0.96) 0.5s forwards;
+  }
+
+  @keyframes hand {
+    0% {
+      gap: 0;
+    }
+    25% {
+      gap: 1rem;
+    }
+    50% {
+      gap: 0;
+    }
+    75% {
+      gap: 1rem;
+    }
+    100% {
+      gap: 0;
+    }
+  }
+
+  @keyframes slideOut {
+    0% {
+      transform: translateY(0);
+    }
+    100% {
+      transform: translateY(-100%);
+    }
+  }
+
+  .hand {
+    width: 100px;
+  }
+
+  .couverture {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    z-index: 9;
+
+    .gradient {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: -1;
+      background: linear-gradient(to bottom, #0a011f00, var(--purple));
+    }
+
+    .bg {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: -2;
+      object-fit: cover;
+    }
+
+    .title {
+      width: 850px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: var(--white);
+      margin-top: 10vh;
+
+      h1 {
+        font-size: 6vw;
+        font-family: var(--font1);
+      }
+      h2 {
+        font-size: 2.5vw;
+        letter-spacing: 0.3rem;
+      }
+      p {
+        font-size: 1vw;
+
+        margin-top: 2vw;
+        font-family: var(--font3);
+        text-align: center;
+      }
+
+      a {
+        margin-top: 2rem;
+        cursor: pointer;
+        padding: 0.5rem 2rem;
+        border-radius: 500px;
+        text-decoration: none;
+        color: var(--white);
+        transition: background-color 0.15s ease-in-out;
+        border-radius: 100px;
+        font-weight: 500;
+        border: 3px solid var(--pink);
+
+        &:hover {
+          background-color: var(--pink);
+          color: var(--white);
+        }
+      }
+    }
+
+    .planet__off,
+    .planet__on {
+      pointer-events: none;
+      position: absolute;
+      bottom: -65%;
+      left: 50%;
+      transform: translate(-50%, 0%);
+      width: 1100px;
+    }
+
+    @keyframes levitate {
+      0%,
+      100% {
+        transform: translate(-50%, 0%) translateY(0);
+      }
+      50% {
+        transform: translate(-50%, 0%) translateY(-10px);
+      }
+    }
+
+    .planet__on {
+      animation: pulse 5s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0% {
+        opacity: 1;
+      }
+      50% {
+        opacity: 0;
+      }
+      100% {
+        opacity: 1;
+      }
+    }
+
+    .accroche {
+      font-size: 8rem;
+      pointer-events: none;
+      position: absolute;
+      bottom: -42%;
+      left: 50%;
+      transform: translate(-50%, 0%);
+      width: 1100px;
+      text-align: center;
+      color: var(--white);
+      text-shadow: 1px 2px 4px rgb(12 12 12 / 59%);
+
+      span.gras {
+        font-family: var(--font1);
+        font-size: 6rem;
+      }
+    }
+
+    .canvas {
+      width: 100%;
+      height: 100vh;
+      z-index: 10;
+      cursor: grab;
+    }
+  }
+
+  .apropos {
+    position: relative;
+    width: 100%;
+    height: 90vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    z-index: 9;
+    padding: 3rem;
+
+    h2 {
+      font-size: 1.5rem;
+      font-family: var(--font1);
+      color: var(--white);
+      margin-bottom: 1rem;
+    }
+    p {
+      width: 900px;
+      color: var(--white);
+      text-align: center;
+    }
+  }
+
+  .track__list {
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+    height: 50vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
+    z-index: 9;
+    padding: 3rem;
+    color: var(--white);
+
+    h2 {
+      font-size: 1.5rem;
+      font-family: var(--font1);
+      color: var(--white);
+      margin-bottom: 2rem;
+    }
+
+    p {
+      width: 900px;
+      color: var(--white);
+      text-align: right;
+      margin-bottom: 0.4rem;
+    }
+
+    .purple_art {
+      height: 100%;
+      position: absolute;
+      top: 50%;
+      left: 0%;
+      transform: translate(0%, -50%);
+      z-index: -2;
+      object-fit: cover;
+    }
+  }
+  .clip {
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+    height: 50vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9;
+
+    .rectangle {
+      position: absolute;
+      top: 0%;
+      left: 0%;
+      width: 100%;
+      height: 100%;
+      z-index: 10;
+      background-color: var(--purple);
+    }
+
+    .video {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 9;
+    }
+  }
+
+  .cover {
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 9;
+    padding: 4rem;
+
+    .loader_canvas {
+      position: absolute !important;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 100%;
+      height: 100%;
+      z-index: 100000;
+      background-color: #0a011fb8;
+      pointer-events: none;
+      transition: 200ms ease-in-out ;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+
+      .spinner {
+        width: 11.2px;
+        height: 11.2px;
+        animation: spinner-o824ag 1s infinite linear;
+     }
+     
+     .spinner div {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: #474bff;
+        border-radius: 50%;
+        animation: spinner-vse6n7 1.25s infinite ease;
+     }
+     
+     .spinner div:nth-child(1) {
+        --rotation: 90;
+     }
+     
+     .spinner div:nth-child(2) {
+        --rotation: 180;
+     }
+     
+     .spinner div:nth-child(3) {
+        --rotation: 270;
+     }
+     
+     .spinner div:nth-child(4) {
+        --rotation: 360;
+     }
+     
+     @keyframes spinner-vse6n7 {
+        0%, 100% {
+           transform: rotate(calc(var(--rotation) * 1deg)) translateY(0);
+        }
+     
+        50% {
+           transform: rotate(calc(var(--rotation) * 1deg)) translateY(300%);
+        }
+     }
+     
+     @keyframes spinner-o824ag {
+        to {
+           transform: rotate(360deg);
+        }
+     }
+      
+    }
+    .active{
+      opacity: 1;
+    }
+
+    .canvas__pochette {
+      cursor: grab;
+      position: absolute !important;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+    }
+
+    h2 {
+      font-size: 1.5rem;
+      font-family: var(--font1);
+      color: var(--white);
+      margin-bottom: 2rem;
+      z-index: 2;
+    }
+
+    .button {
+      margin-top: 2rem;
+      cursor: pointer;
+      padding: 0.5rem 2rem;
+      border-radius: 500px;
+      font-size: 1rem;
+      text-decoration: none;
+      color: var(--white);
+      transition: background-color 0.15s ease-in-out;
+      border-radius: 100px;
+      font-weight: 500;
+      border: 3px solid var(--pink);
+      background-color: var(--pink);
+      z-index: 2;
+
+      &:hover {
+        background-color: transparent;
+        color: var(--white);
+      }
+    }
+  }
 }

@@ -1,0 +1,36 @@
+@import url(https://fonts.googleapis.com/css?family=Alumni+Sans:100,200,300,regular,500,600,700,800,900,100italic,200italic,300italic,italic,500italic,600italic,700italic,800italic,900italic);
+@import url(https://fonts.googleapis.com/css?family=Poppins:100,100italic,200,200italic,300,300italic,regular,italic,500,500italic,600,600italic,700,700italic,800,800italic,900,900italic);
+
+@font-face {
+    font-family: 'NotableRegular';
+    src: url('/font/notable-regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+@font-face {
+    font-family: 'SugiestRegular';
+    src: url('/font/Sugiest-Regular-BF6778b52d95285.otf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+
+:root{
+    --purple : #0A011F;
+    --white: #F8F8F8;
+    --blue: #219EBC;
+    --pink : #F72585;
+
+    --font1: "NotableRegular";
+    --font2: "SugiestRegular";
+    --font3: 'Poppins', sans-serif;
+}
+
+.p5Canvas{
+    display: none;
+    position: absolute !important;
+
+}
