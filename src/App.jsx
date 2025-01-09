@@ -13,8 +13,6 @@ import {
   SMAA,
 } from "@react-three/postprocessing";
 import Disque from "./Disque";
-import { AiOutlineSound } from "react-icons/ai";
-import { GiSoundOff } from "react-icons/gi";
 import tchikita from "./assets/JUL_tchikita.mp3";
 import ovni from "./assets/ovni.mp3";
 import moto from './assets/moto.mp3'
@@ -24,9 +22,8 @@ const App = () => {
   const [textureUrl, setTextureUrl] = useState(null);
   const [resetKey, setResetKey] = useState(0);
   const [isSoundOn, setIsSoundOn] = useState(false);
-  const [lastPlayed, setLastPlayed] = useState(null); // Dernier son joué
+  const [lastPlayed, setLastPlayed] = useState(null);
 
-  // Instances des sons
   const sounds = {
     tchikita: new Audio(tchikita),
     ovni: new Audio(ovni),
@@ -34,19 +31,16 @@ const App = () => {
     vient: new Audio(vient),
   };
 
-  // Fonction pour jouer un son aléatoire différent du dernier
   const playRandomSound = () => {
     const soundKeys = Object.keys(sounds);
     let newSoundKey;
 
-    // Assurez-vous que le nouveau son est différent du dernier
     do {
       newSoundKey = soundKeys[Math.floor(Math.random() * soundKeys.length)];
     } while (newSoundKey === lastPlayed);
 
-    // Mettez à jour le dernier son joué et jouez le son
     setLastPlayed(newSoundKey);
-    sounds[newSoundKey].currentTime = 0; // Repart de zéro
+    sounds[newSoundKey].currentTime = 0;
     sounds[newSoundKey].play();
   };
 
