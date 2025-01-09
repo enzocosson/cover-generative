@@ -13,7 +13,7 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  align-items:center;
+  align-items: center;
   width: 100%;
   min-height: 100vh;
 
@@ -24,7 +24,7 @@
 
     width: 100%;
     height: 100vh;
-    background-color: #0A011F;
+    background-color: #0a011f;
     z-index: 1000;
 
     display: flex;
@@ -32,40 +32,40 @@
     align-items: center;
 
     /* Animation combinée */
-    animation: hand 0.5s ease-in-out, slideOut 0.5s cubic-bezier(0.8, 0, 0.43, 0.96) 0.5s forwards;
-}
+    animation: hand 0.5s ease-in-out,
+      slideOut 0.5s cubic-bezier(0.8, 0, 0.43, 0.96) 0.5s forwards;
+  }
 
-@keyframes hand {
+  @keyframes hand {
     0% {
-        gap: 0;
+      gap: 0;
     }
     25% {
-        gap: 1rem;
+      gap: 1rem;
     }
     50% {
-        gap: 0;
+      gap: 0;
     }
     75% {
-        gap: 1rem;
+      gap: 1rem;
     }
     100% {
-        gap: 0;
+      gap: 0;
     }
-}
+  }
 
-@keyframes slideOut {
+  @keyframes slideOut {
     0% {
-        transform: translateY(0);
+      transform: translateY(0);
     }
     100% {
-        transform: translateY(-100%);
+      transform: translateY(-100%);
     }
-}
+  }
 
-.hand {
+  .hand {
     width: 100px;
-}
-
+  }
 
   .couverture {
     position: relative;
@@ -175,8 +175,8 @@
       100% {
         opacity: 1;
       }
-    }  
-   
+    }
+
     .accroche {
       font-size: 8rem;
       pointer-events: none;
@@ -189,7 +189,7 @@
       color: var(--white);
       text-shadow: 1px 2px 4px rgb(12 12 12 / 59%);
 
-      span.gras{
+      span.gras {
         font-family: var(--font1);
         font-size: 6rem;
       }
@@ -203,7 +203,7 @@
     }
   }
 
-  .apropos{
+  .apropos {
     position: relative;
     width: 100%;
     height: 90vh;
@@ -214,50 +214,47 @@
     z-index: 9;
     padding: 3rem;
 
-    h2{
+    h2 {
       font-size: 1.5rem;
       font-family: var(--font1);
       color: var(--white);
       margin-bottom: 1rem;
     }
-    p{
-    width: 900px;
-    color: var(--white);
-    text-align: center;
+    p {
+      width: 900px;
+      color: var(--white);
+      text-align: center;
     }
-
   }
 
-  .track__list{
+  .track__list {
     overflow: hidden;
     position: relative;
     width: 100%;
     height: 50vh;
     display: flex;
     flex-direction: column;
-    justify-content:center;
+    justify-content: center;
     align-items: flex-end;
     z-index: 9;
     padding: 3rem;
     color: var(--white);
 
-   
-    h2{
+    h2 {
       font-size: 1.5rem;
       font-family: var(--font1);
       color: var(--white);
       margin-bottom: 2rem;
-      
     }
 
-    p{
-    width: 900px;
-    color: var(--white);
-    text-align: right;
-    margin-bottom: 0.4rem;
+    p {
+      width: 900px;
+      color: var(--white);
+      text-align: right;
+      margin-bottom: 0.4rem;
     }
 
-    .purple_art{
+    .purple_art {
       height: 100%;
       position: absolute;
       top: 50%;
@@ -266,20 +263,18 @@
       z-index: -2;
       object-fit: cover;
     }
-
-   
   }
-  .clip{
+  .clip {
     overflow: hidden;
     position: relative;
     width: 100%;
     height: 50vh;
     display: flex;
-    justify-content:center;
+    justify-content: center;
     align-items: center;
     z-index: 9;
 
-    .rectangle{
+    .rectangle {
       position: absolute;
       top: 0%;
       left: 0%;
@@ -289,7 +284,7 @@
       background-color: var(--purple);
     }
 
-    .video{
+    .video {
       position: absolute;
       top: 50%;
       left: 50%;
@@ -301,7 +296,7 @@
     }
   }
 
-  .cover{
+  .cover {
     overflow: hidden;
     position: relative;
     width: 100%;
@@ -313,7 +308,75 @@
     z-index: 9;
     padding: 4rem;
 
-    .canvas__pochette{
+    .loader_canvas {
+      position: absolute !important;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 100%;
+      height: 100%;
+      z-index: 100000;
+      background-color: #0a011fb8;
+      pointer-events: none;
+      transition: 200ms ease-in-out ;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+
+      .spinner {
+        width: 11.2px;
+        height: 11.2px;
+        animation: spinner-o824ag 1s infinite linear;
+     }
+     
+     .spinner div {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: #474bff;
+        border-radius: 50%;
+        animation: spinner-vse6n7 1.25s infinite ease;
+     }
+     
+     .spinner div:nth-child(1) {
+        --rotation: 90;
+     }
+     
+     .spinner div:nth-child(2) {
+        --rotation: 180;
+     }
+     
+     .spinner div:nth-child(3) {
+        --rotation: 270;
+     }
+     
+     .spinner div:nth-child(4) {
+        --rotation: 360;
+     }
+     
+     @keyframes spinner-vse6n7 {
+        0%, 100% {
+           transform: rotate(calc(var(--rotation) * 1deg)) translateY(0);
+        }
+     
+        50% {
+           transform: rotate(calc(var(--rotation) * 1deg)) translateY(300%);
+        }
+     }
+     
+     @keyframes spinner-o824ag {
+        to {
+           transform: rotate(360deg);
+        }
+     }
+      
+    }
+    .active{
+      opacity: 1;
+    }
+
+    .canvas__pochette {
       cursor: grab;
       position: absolute !important;
       top: 50%;
@@ -324,15 +387,12 @@
       z-index: 0;
     }
 
-
-    h2{
+    h2 {
       font-size: 1.5rem;
       font-family: var(--font1);
       color: var(--white);
       margin-bottom: 2rem;
       z-index: 2;
-      
-      
     }
 
     .button {
@@ -350,9 +410,8 @@
       background-color: var(--pink);
       z-index: 2;
 
-
       &:hover {
-        background-color:transparent;
+        background-color: transparent;
         color: var(--white);
       }
     }

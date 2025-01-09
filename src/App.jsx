@@ -26,6 +26,7 @@ const App = () => {
   const [resetKey, setResetKey] = useState(0);
   const [isSoundOn, setIsSoundOn] = useState(false);
   const [lastPlayed, setLastPlayed] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   gsap.registerPlugin(ScrollTrigger);
 
@@ -67,17 +68,22 @@ const App = () => {
   const handleReset = () => {
     setIsSoundOn(!isSoundOn)
     playRandomSound();
+    setIsLoading(true);
     setTextureUrl(null);
     setResetKey((prevKey) => prevKey + 1);
+
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
   };
 
-  const titre_jul = useRef(null)
-  const titre_cover = useRef(null)
-  const titre_txt = useRef(null)
-  const titre_button = useRef(null)
+  const titre_jul = useRef(null);
+  const titre_cover = useRef(null);
+  const titre_txt = useRef(null);
+  const titre_button = useRef(null);
   const planet = useRef(null);
-  const planet2 = useRef(null)
-  const word1 = useRef(null)
+  const planet2 = useRef(null);
+  const word1 = useRef(null);
   const word2 = useRef(null);
   const word3 = useRef(null);
   const word4 = useRef(null);
@@ -95,8 +101,7 @@ const App = () => {
   const track_p4 = useRef(null);
   const track_p5 = useRef(null);
   const rectangle = useRef(null);
-  
-  
+
   useEffect(() => {
     if (titre_jul.current) {
       gsap.fromTo(
@@ -106,11 +111,11 @@ const App = () => {
           y: 0,
           opacity: 1,
           duration: 1,
-          delay: 1.6,
+          delay: 1.3,
           ease: "power2.inOut",
         }
       );
-    };
+    }
     if (titre_cover.current) {
       gsap.fromTo(
         [titre_cover.current],
@@ -119,11 +124,11 @@ const App = () => {
           y: 0,
           opacity: 1,
           duration: 1,
-          delay: 1.8,
+          delay: 1.4,
           ease: "power2.inOut",
         }
       );
-    };
+    }
     if (titre_txt.current) {
       gsap.fromTo(
         [titre_txt.current],
@@ -132,11 +137,11 @@ const App = () => {
           y: 0,
           opacity: 1,
           duration: 1,
-          delay: 2,
+          delay: 1.5,
           ease: "power2.inOut",
         }
       );
-    };
+    }
     if (titre_button.current) {
       gsap.fromTo(
         [titre_button.current],
@@ -145,12 +150,11 @@ const App = () => {
           y: 0,
           opacity: 1,
           duration: 1,
-          delay: 2.2,
+          delay: 1.6,
           ease: "power2.inOut",
         }
       );
-    };
-  
+    }
 
     gsap.fromTo(
       [planet.current, planet2.current],
@@ -158,11 +162,11 @@ const App = () => {
       {
         opacity: 1,
         scale: 1,
-        rotation: 120, 
-        duration: 2,
+        rotation: 120,
+        duration: 1.7,
         delay: 0,
         ease: "power4.out",
-    
+
         scrollTrigger: {
           trigger: planet.current,
           start: "top 90%",
@@ -173,15 +177,22 @@ const App = () => {
       }
     );
 
-
     gsap.fromTo(
-      [word1.current, word2.current, word3.current, word4.current, word5.current, word6.current, word7.current],
+      [
+        word1.current,
+        word2.current,
+        word3.current,
+        word4.current,
+        word5.current,
+        word6.current,
+        word7.current,
+      ],
       { y: 20, opacity: 0 },
       {
         y: 0,
         opacity: 1,
         duration: 0.5,
-        delay: 0, 
+        delay: 0,
         ease: "power2.inOut",
         stagger: 0.1, // L'intervalle entre chaque animation (100ms ici)
         scrollTrigger: {
@@ -201,7 +212,7 @@ const App = () => {
         y: 0,
         opacity: 1,
         duration: 0.5,
-        delay: 0, 
+        delay: 0,
         ease: "power2.inOut",
         stagger: 0.1, // L'intervalle entre chaque animation (100ms ici)
         scrollTrigger: {
@@ -220,7 +231,7 @@ const App = () => {
         x: 0,
         opacity: 1,
         duration: 1,
-        delay: 0, 
+        delay: 0,
         ease: "power2.inOut",
         scrollTrigger: {
           trigger: track.current,
@@ -232,13 +243,20 @@ const App = () => {
       }
     );
     gsap.fromTo(
-      [track_h2.current, track_p1.current, track_p2.current, track_p3.current, track_p4.current, track_p5.current],
+      [
+        track_h2.current,
+        track_p1.current,
+        track_p2.current,
+        track_p3.current,
+        track_p4.current,
+        track_p5.current,
+      ],
       { x: -50, opacity: 0 },
       {
         x: 0,
         opacity: 1,
         duration: 1,
-        delay: 0, 
+        delay: 0,
         stagger: 0.1,
         ease: "power2.inOut",
         scrollTrigger: {
@@ -258,7 +276,7 @@ const App = () => {
         width: "0%",
         opacity: 1,
         duration: 1,
-        delay: 0, 
+        delay: 0,
         stagger: 0.1,
         ease: "power2.inOut",
         scrollTrigger: {
@@ -270,10 +288,7 @@ const App = () => {
         },
       }
     );
-    
-    
   }, []);
-
 
   return (
     <div className={styles.app}>
@@ -287,8 +302,12 @@ const App = () => {
         <div className={styles.gradient}></div>
         <img className={styles.bg} src="/images/bg.png" alt="" />
         <div className={styles.title}>
-          <h1 ref={titre_jul} className="titre_jul">JUL</h1>
-          <h2 ref={titre_cover} className="titre_cover">purple gogh</h2>
+          <h1 ref={titre_jul} className="titre_jul">
+            JUL
+          </h1>
+          <h2 ref={titre_cover} className="titre_cover">
+            purple gogh
+          </h2>
           <p ref={titre_txt} className="titre_txt">
             Découvrez Purple Gogh, l'univers unique où le flow urbain de JUL
             rencontre la magie des étoiles de Van Gogh. Une expérience musicale
@@ -311,8 +330,15 @@ const App = () => {
           alt=""
         />
         <h1 className={styles.accroche}>
-          <span ref={word1}>"Une</span> <span ref={word2}>rencontre</span> <span ref={word3}>inattendue</span> <span ref={word4}>entre</span> <span ref={word5} className={styles.gras}>musique</span> <span ref={word6}>et</span>{" "}
-          <span ref={word7} className={styles.gras}>peinture"</span> 
+          <span ref={word1}>"Une</span> <span ref={word2}>rencontre</span>{" "}
+          <span ref={word3}>inattendue</span> <span ref={word4}>entre</span>{" "}
+          <span ref={word5} className={styles.gras}>
+            musique
+          </span>{" "}
+          <span ref={word6}>et</span>{" "}
+          <span ref={word7} className={styles.gras}>
+            peinture"
+          </span>
         </h1>
       </div>
 
@@ -329,12 +355,14 @@ const App = () => {
 
       <div ref={track} className={styles.track__list}>
         <img
-        ref={track_img}
+          ref={track_img}
           className={styles.purple_art}
           src="/images/purple_art.png"
           alt=""
         />
-        <h2 ref={track_h2}>Une tracklist qui résonne comme une galerie d’art</h2>
+        <h2 ref={track_h2}>
+          Une tracklist qui résonne comme une galerie d’art
+        </h2>
         <p ref={track_p1}>#1 Nuit étoilée sur Marseille</p>
         <p ref={track_p2}>#2 Flow et pinceaux</p>
         <p ref={track_p3}>#3 Coups de pinceau, coups de cœur</p>
@@ -355,6 +383,19 @@ const App = () => {
 
       <div className={styles.cover}>
         <h2>Personnalise ta propre cover lors de la précommande !</h2>
+
+        <div
+          className={`${styles.loader_canvas} ${
+            isLoading ? styles.active : ""
+          }`}
+        >
+          <div className={styles.spinner}>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
+        </div>
 
         <Canvas className={styles.canvas__pochette}>
           <directionalLight
