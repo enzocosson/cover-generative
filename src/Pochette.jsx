@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { useGLTF } from '@react-three/drei';
 import * as THREE from 'three';
 
-function Pochette({ textureURL, ...props }) {
+function Pochette({ textureURL, textureBack, ...props }) {
   const { nodes, materials } = useGLTF('/models/pochette.glb');
   
   const [texture, setTexture] = useState(null);
+  const [backTexture, setBackTexture] = useState(null);
 
   useEffect(() => {
     if (textureURL) {
@@ -23,17 +24,22 @@ function Pochette({ textureURL, ...props }) {
     }
   }, [textureURL]);
 
-  // Vérifie si la texture est valide
+
   useEffect(() => {
-    if (textureURL) {
-      console.log("Texture URL valide :", textureURL);
-    } else {
-      console.warn("Texture URL est invalide ou non chargée !");
+    if (textureBack) {
+      const backTexture = new THREE.TextureLoader().load(textureBack);
+      backTexture.wrapS = backTexture.wrapT = THREE.ClampToEdgeWrapping;
+      backTexture.flipY = false;
+      backTexture.minFilter = THREE.LinearFilter;
+      backTexture.magFilter = THREE.LinearFilter;
+      backTexture.needsUpdate = true;
+      setBackTexture(backTexture);
     }
-  }, [textureURL]);
+  }, [textureBack]);
 
   return (
-    <group {...props} dispose={null}>
+
+<group {...props} dispose={null}>
       <group position={[-0.563, 0, -0.358]} rotation={[-Math.PI / 2, 0, 0.594]}>
         <group rotation={[Math.PI / 2, 0, 0]}>
           <group position={[-0.103, 1.045, 0.58]}>
@@ -49,11 +55,20 @@ function Pochette({ textureURL, ...props }) {
           </group>
         </group>
       </group>
-      <mesh geometry={nodes.Plane.geometry} material={nodes.Plane.material} position={[0.355, 1.04, -0.041]} rotation={[1.572, -0.001, -1.561]}>
-        {texture && (
+      <group position={[-0.563, 0, -0.358]} rotation={[-Math.PI / 2, 0, 0.594]}>
+        <group rotation={[Math.PI / 2, 0, 0]}>
+          <group position={[-0.103, 1.045, 0.58]}>
+            <mesh geometry={nodes.Object_11001.geometry} material={materials['Cover.002']} position={[-0.001, 0, 1.105]} rotation={[0, -0.598, -Math.PI / 2]} />
+          </group>
+        </group>
+      </group>
+      <mesh geometry={nodes.Plane.geometry} material={materials['Material.004']} position={[0.355, 1.04, -0.041]} rotation={[1.572, -0.001, -1.561]}>
+      {texture && (
           <meshStandardMaterial attach="material" map={texture} side={THREE.DoubleSide}/>
         )}
+
       </mesh>
+      <mesh geometry={nodes.Plane001.geometry} material={materials['Material.005']} position={[-0.422, 1.04, 0.136]} rotation={[1.571, -0.001, -2.169]} />
     </group>
   );
 }

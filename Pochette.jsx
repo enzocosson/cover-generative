@@ -25,7 +25,15 @@ export function Model(props) {
           </group>
         </group>
       </group>
-      <mesh geometry={nodes.Plane.geometry} material={nodes.Plane.material} position={[0.355, 1.04, -0.041]} rotation={[1.572, -0.001, -1.561]} />
+      <group position={[-0.563, 0, -0.358]} rotation={[-Math.PI / 2, 0, 0.594]}>
+        <group rotation={[Math.PI / 2, 0, 0]}>
+          <group position={[-0.103, 1.045, 0.58]}>
+            <mesh geometry={nodes.Object_11001.geometry} material={materials['Cover.002']} position={[-0.001, 0, 1.105]} rotation={[0, -0.598, -Math.PI / 2]} />
+          </group>
+        </group>
+      </group>
+      <mesh geometry={nodes.Plane.geometry} material={materials['Material.004']} position={[0.355, 1.04, -0.041]} rotation={[1.572, -0.001, -1.561]} />
+      <mesh geometry={nodes.Plane001.geometry} material={materials['Material.005']} position={[-0.422, 1.04, 0.136]} rotation={[1.571, -0.001, -2.169]} />
     </group>
   )
 }
