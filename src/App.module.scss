@@ -467,11 +467,11 @@
 @media(max-width: 590px){
   .planet__off,
   .planet__on, .accroche{
-    bottom: 0%!important;
+    bottom: 10%!important;
   }
   .accroche{
     font-size: 2.5rem!important;
-    bottom: 10%!important;
+    bottom: 15%!important;
   }
   .accroche span {
     font-size: 3.5rem!important;
@@ -503,10 +503,11 @@
 @media(max-width: 440px){
   .planet__off,
   .planet__on, .accroche{
-   bottom: 10%!important;
+   bottom: 20%!important;
   }
   .accroche{
     font-size: 1.5rem!important;
+    bottom: 30%!important;
   }
   .accroche span {
     font-size: 2.5rem!important;
@@ -516,13 +517,8 @@
   }
 }
 @media(max-width: 364px){
-  .planet__off,
-  .planet__on, .accroche{
-   bottom: 20%!important;
-  }
   .accroche{
     font-size: 1rem!important;
-    bottom: 25%!important;
   }
   .accroche span {
     font-size: 2rem!important;
