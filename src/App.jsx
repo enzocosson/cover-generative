@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useRef } from "react";
-import ScrollReveal from "scrollreveal";
 import styles from "./App.module.scss";
 import { initializeCanvasP5 } from "./CanvasP5";
 
